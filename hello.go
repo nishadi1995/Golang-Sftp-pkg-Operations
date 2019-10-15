@@ -6,7 +6,8 @@ import "log"
 import 	"io/ioutil"
 import "github.com/pkg/sftp"
 import "golang.org/x/crypto/ssh"
-
+import "os"
+import  "io"
 
 var conn *ssh.Client
 var sftpClient *sftp.Client
@@ -69,26 +70,26 @@ func walkDir (){
 
 // create a file
 func leaveMark (content []byte){
-  /*
-  localFile, err := os.Open("/home/nishadi/Desktop/HelloWorld.scala")
+  
+  localFile, err := os.Open("/home/nishadi/Desktop/Booklet.pdf")
     
     defer localFile.Close()
-    remoteFile, err := sftpClient.Create("sftpuser/sftp-test/finalDir/x.scala")
+    remoteFile, err := sftpClient.Create("sftpuser/sftp-test/finalDir/x.pdf")
     println(err)
     if err != nil {
       log.Fatal(err)
       }
     _, err = io.Copy(remoteFile, localFile)
     log.Fatal(err)
-  */
-
-  f, err := sftpClient.Create("/sftpuser/sftp-test/finalDir/hello.txt")
+  
+/*
+  f, err := sftpClient.Create("/sftpuser/sftp-test/finalDir/build.sbt")
   if err != nil {
      log.Fatal(err)
   }
   if _, err := f.Write(content); err != nil {
      log.Fatal(err)
-  }
+  }*/
 }
 
 
