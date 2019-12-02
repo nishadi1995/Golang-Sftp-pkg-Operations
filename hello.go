@@ -8,6 +8,7 @@ import "github.com/pkg/sftp"
 import "golang.org/x/crypto/ssh"
 import "os"
 import  "io"
+import "encoding/base64"
 
 var conn *ssh.Client
 var sftpClient *sftp.Client
@@ -23,6 +24,13 @@ func createConn() {
      ssh.Password("sftpuser"),
    },
    HostKeyCallback: func(hostname string, remote net.Addr, key ssh.PublicKey) error {
+     fmt.Println("server host key's type :", key.Type())
+     
+
+     fmt.Println(ssh.FingerprintSHA256(key))
+
+     str := base64.StdEncoding.EncodeToString(key.Marshal())
+     fmt.Println(str)
      return nil
    },
   }
@@ -104,7 +112,7 @@ func isThere (){
 
 //rename a file
 func renameFile (){
-  err := sftpClient.Rename("/sftpuser/sftp-test/finalDir/new3.txt","/sftpuser/sftp-test/finalDir/new2.txt")
+  err := sftpClient.Rename("/sftpuser/sftp-test/tempDir/build.sbt","/sftpuser/sftp-test/finalDir/build2.sbt")
   if err != nil {
     log.Fatal(err)
   }  
@@ -137,19 +145,17 @@ func readToByteArray() []byte{
 }
 
 
-
 func main() {
   fmt.Printf("hello, world\n")
-  var content []byte = readToByteArray();
+ var content []byte = readToByteArray();
   createConn();
   createSession();
   getWorkingDir();
   walkDir();
-  leaveMark(content);
+ leaveMark(content);
   renameFile();
-  isThere();
-  remove();
-  
+ isThere();
+ remove();
   //close  connection
   defer close();
   
